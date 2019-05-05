@@ -18,10 +18,6 @@ spring:
   jmx:
     enabled: false
 management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
 hystrix:
   metrics:
     enabled: true

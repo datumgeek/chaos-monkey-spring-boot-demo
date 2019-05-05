@@ -5,10 +5,6 @@ management:
   endpoint:
     chaosmonkey:
       enabled: true
-  endpoints:
-    web:
-      exposure:
-        include: '*'
 chaos:
   monkey:
     enabled: false

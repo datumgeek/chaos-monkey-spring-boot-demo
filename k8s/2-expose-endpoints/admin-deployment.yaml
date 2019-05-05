@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: shoppingdemo
+  name: admin-pod
+  labels:
+    app: shoppingdemo
+    type: spring-boot
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: admin
+    spec:
+      serviceAccountName: admin
+      containers:
+        - image: joshiste/admin:chaos-ws-k8s
+          imagePullPolicy: Never
+          name: admin
+          env:
+            - name: management.endpoints.web.exposure.include
+              value: "*"
+          ports:
+            - containerPort: 8080
+          resources: {}
+          readinessProbe:
+            httpGet:
+              port: 8080
+              path: /actuator/health
+            initialDelaySeconds: 5
+            failureThreshold: 3
+            timeoutSeconds: 5
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: admin
+
+
+
+

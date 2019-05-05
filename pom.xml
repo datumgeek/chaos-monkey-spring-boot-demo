@@ -13,28 +13,25 @@
         <module>bestseller-toys</module>
         <module>gateway</module>
         <module>shared</module>
+        <module>admin</module>
     </modules>
     <packaging>pom</packaging>
 
 
     <properties>
         <!--Docker Container Image Prefix -->
-        <docker.image.prefix>mrbwilms</docker.image.prefix>
+        <docker.image.prefix>joshiste</docker.image.prefix>
         <docker-maven-plugin.version>1.4.3</docker-maven-plugin.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <spring-boot-dependencies.version>2.1.2.RELEASE</spring-boot-dependencies.version>
-        <spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
-        <spring-cloud-sleuth.version>2.1.0.RELEASE</spring-cloud-sleuth.version>
-        <spring-cloud-open-tracing.version>1.0.1</spring-cloud-open-tracing.version>
-        <lombok.version>1.16.20</lombok.version>
+        <spring-boot-dependencies.version>2.1.4.RELEASE</spring-boot-dependencies.version>
+        <spring-boot-maven-plugin.version>2.1.4.RELEASE</spring-boot-maven-plugin.version>
+        <spring-boot-admin.version>2.1.4</spring-boot-admin.version>
+        <spring-cloud.version>Greenwich.SR1</spring-cloud.version>
         <chaos-monkey-spring-boot.version>2.0.2</chaos-monkey-spring-boot.version>
-
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
-        <spring-boot-maven-plugin.version>2.1.2.RELEASE</spring-boot-maven-plugin.version>
-
     </properties>
 
     <dependencyManagement>
@@ -54,11 +51,12 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
             <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-sleuth</artifactId>
-                <version>${spring-cloud-sleuth.version}</version>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-dependencies</artifactId>
+                <version>${spring-boot-admin.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>de.codecentric</groupId>
@@ -80,36 +78,6 @@
                 <artifactId>spring-boot-starter-web</artifactId>
                 <version>${spring-boot-dependencies.version}</version>
             </dependency>
-            <dependency>
-                <groupId>io.opentracing.contrib</groupId>
-                <artifactId>opentracing-spring-jaeger-cloud-starter</artifactId>
-                <version>${spring-cloud-open-tracing.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.opentracing.contrib</groupId>
-                <artifactId>opentracing-spring-jaeger-web-starter</artifactId>
-                <version>${spring-cloud-open-tracing.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-devtools</artifactId>
-                <version>${spring-boot-dependencies.version}</version>
-                <scope>runtime</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-test</artifactId>
-                <version>${spring-boot-dependencies.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>${lombok.version}</version>
-            </dependency>
-
         </dependencies>
     </dependencyManagement>
 
@@ -161,7 +129,7 @@
                             <phase>package</phase>
                             <goals>
                                 <goal>build</goal>
-                                <goal>push</goal>
+                                <!--goal>push</goal-->
                             </goals>
                         </execution>
                     </executions>
