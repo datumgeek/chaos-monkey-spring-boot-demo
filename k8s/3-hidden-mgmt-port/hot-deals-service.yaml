@@ -3,10 +3,16 @@ kind: Service
 metadata:
   namespace: shoppingdemo
   name: hotdeals-service
+  labels:
+    management.port: "9080"
+    type: spring-boot
 spec:
   ports:
     - name: "http"
       port: 8083
       targetPort: 8083
+    - name: "management"
+      port: 9080
+      targetPort: 9080
   selector:
     app: hotdeals

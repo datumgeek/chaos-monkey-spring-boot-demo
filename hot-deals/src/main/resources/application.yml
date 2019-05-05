@@ -1,30 +1,5 @@
 server:
   port: 8083
-spring:
-  profiles:
-    active: chaos-monkey
-  application:
-    name: hotdeals
-  zipkin:
-    base-url: http://jaeger-server:9411
-    sender:
-      type: web
-  sleuth:
-    sampler:
-      probability: 1.0
-  jmx:
-    enabled: false
 
-management:
-  endpoint:
-    chaosmonkey:
-      enabled: true
-
-chaos:
-  monkey:
-    enabled: false
-    watcher:
-      restController: true
-      service: false
-    assaults:
-      latency-active: false
+info:
+  swagger-ui: http://hotdeals.workshop.demo/swagger-ui.html

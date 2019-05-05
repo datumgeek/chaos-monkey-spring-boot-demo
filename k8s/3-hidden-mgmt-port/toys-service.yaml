@@ -3,10 +3,16 @@ kind: Service
 metadata:
   namespace: shoppingdemo
   name: toys-service
+  labels:
+    management.port: "9080"
+    type: spring-boot
 spec:
   ports:
     - name: "http"
       port: 8081
       targetPort: 8081
+    - name: "management"
+      port: 9080
+      targetPort: 9080
   selector:
     app: toys

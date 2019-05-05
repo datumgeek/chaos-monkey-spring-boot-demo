@@ -2,41 +2,43 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: shoppingdemo
-  name: fashion-pod
+  name: mailhog-pod
   labels:
-    app: shoppingdemo
-    type: spring-boot
+    app: mailhog
 spec:
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
-        app: fashion
+        app: mailhog
     spec:
       containers:
-        - image: joshiste/bestseller-fashion:sio-bcn
-          imagePullPolicy: Never
-          name: fashion
+        - image: mailhog/mailhog
+          imagePullPolicy: IfNotPresent
+          name: mailhog
           ports:
-            - containerPort: 8082
+            - containerPort: 1025
+            - containerPort: 8025
           resources: {}
           readinessProbe:
-            httpGet:
-              path: /actuator/health
-              port: 8082
+            tcpSocket:
+              port: 1025
             initialDelaySeconds: 10
             timeoutSeconds: 2
             periodSeconds: 5
             failureThreshold: 5
           livenessProbe:
-            httpGet:
-              path: /actuator/health
-              port: 8082
-            initialDelaySeconds: 20
+            tcpSocket:
+              port: 1025
+            initialDelaySeconds: 10
             timeoutSeconds: 2
-            periodSeconds: 8
+            periodSeconds: 5
             failureThreshold: 5
       restartPolicy: Always
   selector:
     matchLabels:
-      app: fashion
+      app: mailhog
+
+
+
+

@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: mailhog-ingress
+  namespace: shoppingdemo
+spec:
+  rules:
+    - host: mail.workshop.demo
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: mailhog-service
+              servicePort: 8025

@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: gateway-ingress
@@ -6,7 +6,7 @@ metadata:
 spec:
   rules:
     - host: gateway.workshop.demo
-    #- host: gateway-HOSTPATTERN.chaos.codecentric.io
+      #- host: gateway-HOSTPATTERN.chaos.codecentric.io
       http:
         paths:
           - path: /

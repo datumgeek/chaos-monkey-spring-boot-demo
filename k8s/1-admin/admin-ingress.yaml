@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: admin-ingress
@@ -6,7 +6,7 @@ metadata:
 spec:
   rules:
     - host: admin.workshop.demo
-    #- host: fashion-HOSTPATTERN.chaos.codecentric.io
+      #- host: fashion-HOSTPATTERN.chaos.codecentric.io
       http:
         paths:
           - path: /

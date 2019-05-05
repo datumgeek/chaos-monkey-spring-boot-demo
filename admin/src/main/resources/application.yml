@@ -1,0 +1,24 @@
+spring:
+  cloud:
+    kubernetes:
+      discovery:
+        catalogServicesWatchDelay: 5000
+        service-labels:
+          type: spring-boot
+
+  boot:
+    admin:
+      monitor:
+        status-interval: 3s
+        status-lifetime: 3s
+      ui:
+        external-views:
+          - label: "Logs"
+            url: http://codecentric.de
+            order: 2000
+      notify:
+        mail:
+          to: johannes.edmeier@codecentric.de
+  mail:
+    port: 1025
+    host: mailhog-service.shoppingdemo

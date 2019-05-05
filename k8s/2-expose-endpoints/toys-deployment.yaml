@@ -8,29 +8,39 @@ metadata:
     type: spring-boot
 spec:
   replicas: 2
-  strategy:
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
   template:
     metadata:
       labels:
         app: toys
     spec:
       containers:
-      - image: joshiste/bestseller-toys:chaos-ws-k8s
-        imagePullPolicy: Never
-        name: toys
-        ports:
-        - containerPort: 8081
-        resources: {}
-        livenessProbe:
-          httpGet:
-            port: 8081
-            path: /actuator/health
-          initialDelaySeconds: 30
-          failureThreshold: 3
-          timeoutSeconds: 5
+        - image: joshiste/bestseller-toys:sio-bcn
+          imagePullPolicy: Never
+          name: toys
+          env:
+            - name: management.endpoints.web.exposure.include
+              value: "*"
+            - name: management.endpoint.health.show-details
+              value: "always"
+          ports:
+            - containerPort: 8081
+          resources: {}
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8081
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8081
+            initialDelaySeconds: 20
+            timeoutSeconds: 2
+            periodSeconds: 8
+            failureThreshold: 5
       restartPolicy: Always
   selector:
     matchLabels:

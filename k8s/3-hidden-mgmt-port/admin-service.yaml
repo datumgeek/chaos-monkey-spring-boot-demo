@@ -4,11 +4,14 @@ metadata:
   namespace: shoppingdemo
   name: admin-service
   labels:
-    app: shoppingdemo
+    type: spring-boot
 spec:
   ports:
     - name: "http"
       port: 8080
       targetPort: 8080
+    - name: "management"
+      port: 9080
+      targetPort: 9080
   selector:
     app: admin

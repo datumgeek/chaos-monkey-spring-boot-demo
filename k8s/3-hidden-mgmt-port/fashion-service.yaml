@@ -3,10 +3,16 @@ kind: Service
 metadata:
   namespace: shoppingdemo
   name: fashion-service
+  labels:
+    management.port: "9080"
+    type: spring-boot
 spec:
   ports:
     - name: "http"
       port: 8082
       targetPort: 8082
+    - name: "management"
+      port: 9080
+      targetPort: 9080
   selector:
     app: fashion

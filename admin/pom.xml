@@ -11,7 +11,16 @@
 
   <artifactId>admin</artifactId>
   <name>admin</name>
+
+  <properties>
+    <spring-boot-dependencies.version>2.2.0.M2</spring-boot-dependencies.version>
+    <spring-boot-maven-plugin.version>2.2.0.M2</spring-boot-maven-plugin.version>
+    <spring-boot-admin.version>2.2.0-SNAPSHOT</spring-boot-admin.version>
+    <spring-cloud.version>Hoxton.BUILD-SNAPSHOT</spring-cloud.version>
+  </properties>
   <dependencies>
+
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
@@ -29,18 +38,70 @@
       <artifactId>spring-cloud-starter-kubernetes</artifactId>
     </dependency>
 
+
+
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-mail</artifactId>
+    </dependency>
   </dependencies>
+
   <build>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
+
       <plugin>
-        <groupId>com.spotify</groupId>
-        <artifactId>dockerfile-maven-plugin</artifactId>
+        <!-- used to trigger the npm build -->
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>npm-install</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>npm</executable>
+              <arguments>
+                <argument>ci</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>npm-build</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <skip>${skipNpmBuild}</skip>
+              <executable>npm</executable>
+              <arguments>
+                <argument>run</argument>
+                <argument>build</argument>
+              </arguments>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
+
     </plugins>
+
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>target/dist</directory>
+        <targetPath>META-INF/spring-boot-admin-server-ui/extensions/sample-ui</targetPath>
+        <filtering>false</filtering>
+      </resource>
+    </resources>
   </build>
 
 </project>

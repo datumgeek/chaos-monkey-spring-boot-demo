@@ -8,29 +8,37 @@ metadata:
     type: spring-boot
 spec:
   replicas: 2
-  strategy:
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
   template:
     metadata:
       labels:
         app: hotdeals
     spec:
       containers:
-      - image: joshiste/hot-deals:chaos-ws-k8s
-        imagePullPolicy: Never
-        name: hotdeals
-        ports:
-        - containerPort: 8083
-        resources: {}
-        livenessProbe:
-          httpGet:
-            port: 8083
-            path: /actuator/health
-          initialDelaySeconds: 30
-          failureThreshold: 3
-          timeoutSeconds: 5
+        - image: joshiste/hot-deals:sio-bcn
+          imagePullPolicy: Never
+          name: hotdeals
+          env:
+            - name: management.endpoints.web.exposure.include
+              value: "*"
+          ports:
+            - containerPort: 8083
+          resources: {}
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8083
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8083
+            initialDelaySeconds: 20
+            timeoutSeconds: 2
+            periodSeconds: 8
+            failureThreshold: 5
       restartPolicy: Always
   selector:
     matchLabels:

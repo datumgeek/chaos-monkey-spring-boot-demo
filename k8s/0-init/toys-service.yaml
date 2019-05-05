@@ -3,12 +3,12 @@ kind: Service
 metadata:
   namespace: shoppingdemo
   name: toys-service
+  labels:
+    type: spring-boot
 spec:
   ports:
-  - name: "http"
-    port: 8081
-    targetPort: 8081
+    - name: "http"
+      port: 8081
+      targetPort: 8081
   selector:
     app: toys
-status:
-  loadBalancer: {}

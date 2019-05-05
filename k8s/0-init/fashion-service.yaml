@@ -4,11 +4,11 @@ metadata:
   namespace: shoppingdemo
   name: fashion-service
   labels:
-    app: shoppingdemo
+    type: spring-boot
 spec:
   ports:
-  - name: "http"
-    port: 8082
-    targetPort: 8082
+    - name: "http"
+      port: 8082
+      targetPort: 8082
   selector:
     app: fashion

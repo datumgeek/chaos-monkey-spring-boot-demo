@@ -2,33 +2,47 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: shoppingdemo
-  name: fashion-pod
+  name: admin-pod
   labels:
     app: shoppingdemo
     type: spring-boot
 spec:
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
-        app: fashion
+        app: admin
     spec:
+      serviceAccountName: admin
       containers:
-        - image: joshiste/bestseller-fashion:sio-bcn
+        - image: joshiste/admin:sio-bcn
           imagePullPolicy: Never
-          name: fashion
+          name: admin
           env:
+            - name: KUBERNETES_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: spring.boot.admin.ui.brand
+              value: <img src="assets/img/icon-spring-boot-admin.svg"><span>SBA $(KUBERNETES_NAMESPACE)</span>
+            - name: spring.boot.admin.ui.title
+              value: SBA - $(KUBERNETES_NAMESPACE)
+            - name: management.server.port
+              value: "9080"
             - name: management.endpoints.web.exposure.include
               value: "*"
             - name: management.endpoint.health.show-details
               value: "always"
+            - name: spring.cloud.kubernetes.discovery.primary-port-name
+              value: "management"
           ports:
-            - containerPort: 8082
+            - containerPort: 8080
+            - containerPort: 9080
           resources: {}
           readinessProbe:
             httpGet:
               path: /actuator/health
-              port: 8082
+              port: 9080
             initialDelaySeconds: 10
             timeoutSeconds: 2
             periodSeconds: 5
@@ -36,7 +50,7 @@ spec:
           livenessProbe:
             httpGet:
               path: /actuator/health
-              port: 8082
+              port: 9080
             initialDelaySeconds: 20
             timeoutSeconds: 2
             periodSeconds: 8
@@ -44,4 +58,8 @@ spec:
       restartPolicy: Always
   selector:
     matchLabels:
-      app: fashion
+      app: admin
+
+
+
+
